@@ -3,7 +3,7 @@
 FROM php:8.2-apache
 
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /var/www/html/public
 
 # Enable Apache mod_rewrite (important for Laravel/any route handling)
 RUN a2enmod rewrite
