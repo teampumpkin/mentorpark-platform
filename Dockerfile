@@ -27,13 +27,13 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
 # Clear caches
-RUN php artisan config:clear \
-    && php artisan cache:clear \
-    && php artisan route:clear \
-    && php artisan view:clear
+#RUN php artisan config:clear \
+ #   && php artisan cache:clear \
+  #  && php artisan route:clear \
+   # && php artisan view:clear
 
 # Create storage symlink
-RUN php artisan storage:link
+#RUN php artisan storage:link
 
 
 # Copy supervisor config for queue worker (optional if using queues)
