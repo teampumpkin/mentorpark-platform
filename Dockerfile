@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 FROM php:8.2-apache
 
 # Enable Apache mod_rewrite (important for Laravel/any route handling)
