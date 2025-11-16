@@ -9,7 +9,7 @@ RUN a2enmod rewrite
 RUN docker-php-ext-install pdo pdo_mysql
 
 # Copy project files into the Apache root directory
-COPY . /var/www/html/
+COPY public/ /var/www/html/
 
 # Set correct permissions (optional but recommended)
 RUN chown -R www-data:www-data /var/www/html
