@@ -9,7 +9,7 @@ services:
         SOURCE_COMMIT: "HEAD"
     container_name: mentorpark-app
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       - ./:/var/www/html
     environment:
