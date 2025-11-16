@@ -35,8 +35,9 @@ RUN php artisan config:clear \
 # Create storage symlink
 RUN php artisan storage:link
 
+
 # Copy supervisor config for queue worker (optional if using queues)
-COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
+#COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 
 # Expose port 80
 EXPOSE 80
