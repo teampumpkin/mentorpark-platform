@@ -1,6 +1,5 @@
 FROM php:8.2-apache
 
-# Set working directory to project root
 WORKDIR /var/www/html
 
 # Enable Apache mod_rewrite
@@ -11,7 +10,7 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    unzip git curl libzip-dev \
+    unzip git curl libzip-dev supervisor \
     && docker-php-ext-install pdo pdo_mysql zip
 
 # Install Composer
@@ -23,17 +22,24 @@ COPY . /var/www/html
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
-# Ensure Laravel storage and cache are writable
-RUN chown -R www-data:www-data storage bootstrap/cache && \
-    chmod -R 775 storage bootstrap/cache
+# Ensure storage and bootstrap/cache are writable
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
+# Clear caches
+RUN php artisan config:clear \
+    && php artisan cache:clear \
+    && php artisan route:clear \
+    && php artisan view:clear
 
+# Create storage symlink
+RUN php artisan storage:link
 
-# Expose port
+# Copy supervisor config for queue worker (optional if using queues)
+COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
+
+# Expose port 80
 EXPOSE 80
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Start supervisor and Apache
+CMD ["sh", "-c", "supervisord -n -c /etc/supervisor/conf.d/supervisor.conf & apache2-foreground"]
