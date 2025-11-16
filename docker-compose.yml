@@ -11,7 +11,7 @@ services:
     ports:
       - "9090:80"
     volumes:
-      - ./:/var/www/html
+      - ./public:/var/www/html
     environment:
       APP_ENV: production
     restart: unless-stopped
