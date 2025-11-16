@@ -1,0 +1,187 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Services\GoogleClientService;
+use Google_Service_Calendar;
+
+class GoogleCalendarController extends Controller
+{
+    protected $googleClientService;
+
+    public function __construct(GoogleClientService $googleClientService)
+    {
+        $this->googleClientService = $googleClientService;
+    }
+
+    public function redirectToGoogle()
+    {
+        $client = $this->googleClientService->getClient();
+        $authUrl = $client->createAuthUrl();
+        return redirect($authUrl);
+    }
+
+    public function handleGoogleCallback(Request $request)
+    {
+        /*$client = $this->googleClientService->getClient();
+        $token = $client->fetchAccessTokenWithAuthCode($request->code);
+        session(['google_access_token' => $token]);
+        return redirect()->route('calendar.view');*/
+
+        $client = $this->googleClientService->getClient();
+        $token = $client->fetchAccessTokenWithAuthCode($request->code);
+
+        // Store tokens in the authenticated user record
+        $user = auth()->user();
+        $user->google_token = json_encode($token); // Or store separately as access_token & refresh_token
+        $user->save();
+
+        return redirect()->route('calendar.view');
+    }
+
+    public function viewCalendarEvents()
+    {
+        $client = $this->googleClientService->getClient();
+        if (!session('google_access_token')) {
+            return redirect()->route('google.redirect');
+        }
+
+        $client->setAccessToken(session('google_access_token'));
+
+        // Refresh the token if expired
+        if ($client->isAccessTokenExpired()) {
+            $refreshToken = $client->getRefreshToken();
+            $client->fetchAccessTokenWithRefreshToken($refreshToken);
+            session(['google_access_token' => $client->getAccessToken()]);
+        }
+
+        $service = new Google_Service_Calendar($client);
+        $calendarId = config('app.google_calendar_id') ?? env('GOOGLE_CALENDAR_ID');
+
+        // Fetch upcoming events
+        $optParams = [
+            'maxResults' => 10,
+            'orderBy' => 'startTime',
+            'singleEvents' => true,
+            'timeMin' => date('c'),
+        ];
+        $events = $service->events->listEvents($calendarId, $optParams);
+
+
+        return view('frontend.calendar.view-calendar', ['events' => $events->getItems()]);
+//        return view('frontend.calendar.view-calendar');
+    }
+
+    public function createGoogleCalendarEvent(Request $request)
+    {
+        $client = $this->googleClientService->getClient();
+
+        if (!session('google_access_token')) {
+            return redirect()->route('google.redirect');
+        }
+
+        $client->setAccessToken(session('google_access_token'));
+
+        // Refresh token if expired
+        if ($client->isAccessTokenExpired()) {
+            $refreshToken = $client->getRefreshToken();
+            $client->fetchAccessTokenWithRefreshToken($refreshToken);
+            session(['google_access_token' => $client->getAccessToken()]);
+        }
+
+        $service = new Google_Service_Calendar($client);
+        $calendarId = config('app.google_calendar_id') ?? env('GOOGLE_CALENDAR_ID');
+
+        // Prepare event data from the request
+        $event = new \Google_Service_Calendar_Event([
+            'summary' => $request->input('summary'),      // Event title
+            'description' => $request->input('description'), // Event description or agenda
+            'start' => [
+                'dateTime' => $request->input('start'),    // Start date/time, ISO 8601 format
+                'timeZone' => 'Asia/Kolkata',
+            ],
+            'end' => [
+                'dateTime' => $request->input('end'),      // End date/time, ISO 8601 format
+                'timeZone' => 'Asia/Kolkata',
+            ],
+            'conferenceData' => [
+                'createRequest' => [
+                    'conferenceSolutionKey' => ['type' => 'hangoutsMeet'],
+                    'requestId' => uniqid(),  // Unique ID for the request
+                ],
+            ],
+            'attendees' => array_map(function ($email) {
+                return ['email' => $email];
+            }, $request->input('attendees', [])), // Optional attendees email array
+        ]);
+
+        $createdEvent = $service->events->insert($calendarId, $event, ['conferenceDataVersion' => 1]);
+
+        return response()->json([
+            'eventId' => $createdEvent->getId(),
+            'hangoutLink' => $createdEvent->getHangoutLink(),
+            'htmlLink' => $createdEvent->getHtmlLink()
+        ]);
+    }
+
+    public function updateEventTime(Request $request, $eventId)
+    {
+        $client = $this->googleClientService->getClient();
+
+        if (!session('google_access_token')) {
+            return redirect()->route('google.redirect');
+        }
+
+        $client->setAccessToken(session('google_access_token'));
+
+        // Refresh token if expired
+        if ($client->isAccessTokenExpired()) {
+            $refreshToken = $client->getRefreshToken();
+            $client->fetchAccessTokenWithRefreshToken($refreshToken);
+            session(['google_access_token' => $client->getAccessToken()]);
+        }
+
+        $service = new Google_Service_Calendar($client);
+        $calendarId = config('app.google_calendar_id') ?? env('GOOGLE_CALENDAR_ID');
+
+        // Get the existing event
+        $event = $service->events->get($calendarId, $eventId);
+
+        // Update the start and end time (ISO 8601 format required)
+        $event->setStart(new \Google_Service_Calendar_EventDateTime([
+            'dateTime' => $request->input('start'),  // e.g., '2025-09-25T15:00:00+05:30'
+            'timeZone' => 'Asia/Kolkata',
+        ]));
+
+        $event->setEnd(new \Google_Service_Calendar_EventDateTime([
+            'dateTime' => $request->input('end'),    // e.g., '2025-09-25T16:00:00+05:30'
+            'timeZone' => 'Asia/Kolkata',
+        ]));
+
+        // Update the event
+        $updatedEvent = $service->events->update($calendarId, $eventId, $event);
+
+        return response()->json([
+            'eventId' => $updatedEvent->getId(),
+            'start' => $updatedEvent->getStart(),
+            'end' => $updatedEvent->getEnd(),
+            'htmlLink' => $updatedEvent->getHtmlLink(),
+        ]);
+    }
+
+    public function demoCreateEvent()
+    {
+        $demoRequest = new \Illuminate\Http\Request([
+            'summary' => 'Demo Meeting',
+            'description' => 'This is a demo event created via Google Calendar API',
+            'start' => '2025-09-25T10:00:00+05:30',
+            'end' => '2025-09-25T11:00:00+05:30',
+            'attendees' => ['satyam.maurya@teampumpkin.com', 'attendee2@example.com'],
+        ]);
+
+        return $this->createGoogleCalendarEvent($demoRequest);
+    }
+
+
+}

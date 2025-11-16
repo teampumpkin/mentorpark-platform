@@ -1,0 +1,574 @@
+body{
+    background: #ffffff;
+}
+
+.role-img{
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #FFF;
+    margin-right: -10px;
+}
+
+
+.avatar-badge {
+    background: #6c3ccd;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.05rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #FFF;
+    margin-left: -10px;
+    margin-right: 0;
+}
+
+
+.left-img-bg{
+    background: url('/frontend/assets/images/sections/register.png') center center/cover no-repeat;
+    height: 100%;
+    color: #fff;
+    display: flex;
+    align-items: end;
+    border-radius: 18px;
+}
+
+
+.step-indicator {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.step-indicator div {
+    text-align: center;
+}
+
+.step-indicator .active {
+    color: #8d5cf6;
+    font-weight: bold;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 8px;
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.section-desc {
+    text-align: center;
+    margin-bottom: 32px;
+    color: #8C8C8C;
+}
+
+.about-form {
+    max-width: 1000px;
+    margin: 0 auto;
+    /*background: #fff;*/
+    /*border-radius: 12px;*/
+    padding: 32px 24px;
+    /*box-shadow: 0 8px 24px rgba(141, 92, 246, 0.03);*/
+}
+
+.about-form .form-label {
+    font-weight: 500;
+    color: #393939;
+}
+
+.about-form .form-select,
+.about-form .form-control {
+    border-radius: 6px;
+}
+
+.about-form .required {
+    color: #ff0000;
+}
+
+.about-form .btn-primary {
+    background: #8d5cf6;
+    border: none;
+}
+
+.step-indicator {
+    gap: 0;
+    align-items: center;
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #8d5cf6;
+    border-radius: 50%;
+    background: #fff;
+    color: #8d5cf6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.step-circle.active,
+.step-circle.completed {
+    background: #8d5cf6;
+    color: #fff;
+}
+
+.step-line {
+    flex: 0 0 48px;
+    height: 2px;
+    background: #e8dbfc;
+    margin: 0 4px;
+}
+
+.step-circle.completed ~ .step-line {
+    background: #8d5cf6;
+}
+.top-right-menu {
+    background: #ffffff;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; /* This pushes content to the right */
+}
+
+.menu-div {
+    width: 250px;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end; /* Ensures image is at right edge within the div */
+}
+
+
+.skill-checkbox-grid {
+    max-width: 700px;
+    margin: 0 auto;
+}
+.skill-check-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: #fff;
+    border: 2px solid #e7e4fb;
+    border-radius: 50px;
+    padding: 0px 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: border 0.2s, box-shadow 0.2s, background 0.18s;
+    position: relative;
+    user-select: none;
+    min-height: 40px;
+}
+.skill-check-btn .btn-label {
+    flex: 1;
+    color: #393939;
+}
+.skill-check-btn .tick-mark {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #8d5cf6;
+    background: #f8f6fd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    transition: background 0.2s, border 0.2s;
+    font-size: 1rem;
+    position: relative;
+}
+.skill-check-btn input[type="checkbox"] {
+    display: none;
+}
+.skill-check-btn.selected,
+.skill-check-btn input[type="checkbox"]:checked + .btn-label + .tick-mark {
+    border-color: #8d5cf6;
+    background: #f6f0fa;
+}
+.skill-check-btn input[type="checkbox"]:checked + .btn-label + .tick-mark {
+    background: #8d5cf6;
+    border-color: #8d5cf6;
+    color: #fff;
+}
+.skill-check-btn input[type="checkbox"]:checked + .btn-label + .tick-mark::after {
+    content: '✔';
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    display: block;
+}
+.skill-check-btn .tick-mark::after {
+    content: '';
+    display: block;
+}
+
+.step-field-form {
+    /*display: flex;*/
+    align-items: center;
+    justify-content: center;
+    /* optional: background, padding, animation... */
+}
+
+.about-section-center {
+    padding: 40px 32px 32px 32px;
+    max-width: 430px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+
+.skill-checkbox-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* spacing between items */
+    max-width: 900px; /* or whatever max width you want */
+    margin: 0 auto;
+    justify-content: flex-start;
+}
+
+
+
+/* The label text */
+.skill-check-btn .btn-label {
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #393939;
+}
+
+/* Tick mark style */
+.skill-check-btn .tick-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid #e7e4fb;
+    background: #f8f6fd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    transition: background 0.2s, border 0.2s;
+    font-size: 1.1rem;
+    color: transparent;
+    user-select: none;
+}
+
+.skill-check-btn input[type="checkbox"] {
+    display: none;
+}
+
+/* When checked */
+.skill-check-btn input[type="checkbox"]:checked + .btn-label + .tick-mark {
+    background: #8d5cf6;
+    border-color: #8d5cf6;
+    color: #fff;
+}
+
+.skill-check-btn input[type="checkbox"]:checked + .btn-label + .tick-mark::after {
+    content: '✔';
+    font-weight: 700;
+    display: block;
+}
+
+/* Optional hover effect */
+.skill-check-btn:hover {
+    border-color: #8d5cf6;
+    box-shadow: 0 0 6px rgba(141, 92, 246, 0.3);
+}
+
+.mentoring-textarea {
+    min-height: 120px;
+    border-radius: 12px;
+    border: 1.5px solid #eae8f6;
+    /*background: #f7f0fe;*/
+    font-size: 14px;
+    padding: 16px 18px;
+    resize: vertical;
+    transition: border-color 0.2s;
+    box-shadow: 0 2px 20px 0 rgba(141, 92, 246, 0.05);
+}
+.mentoring-textarea:focus {
+    border-color: #8d5cf6;
+    background: #fff;
+    outline: none;
+    box-shadow: 0 0 0 2px #eae8f6;
+}
+.form-label {
+    font-weight: 500;
+    color: #393939;
+    margin-bottom: 6px;
+}
+
+@media only screen and (min-width: 600px) {
+    .logo img{
+        width: 160px;
+        height: 50px;
+    }
+}
+
+
+.page-header-bar {
+    display: flex;
+    padding: 0 30px;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 16px;
+    margin-top: 18px;
+}
+
+.page-title {
+    color: #6c3fc6;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0;
+    letter-spacing: -1px;
+}
+
+.page-desc {
+    display: block;
+    margin-top: 2px;
+    font-size: 1rem;
+    color: #222;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+.page-edit-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #6c3fc6;
+    color: #fff;
+    border: none;
+    padding: 8px 26px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.page-edit-btn svg {
+    margin-left: 6px;
+    color: #fff;
+}
+.page-edit-btn:hover {
+    background: #552a99;
+}
+
+.profile-image{
+    border-radius: 100px;
+    width: 110px;
+    height: 110px;
+}
+
+.text-bg-brand{
+    background: #5D29A6;
+    color: #ffffff;
+}
+.heading-title{
+    font-weight: 800;
+}
+
+.profile-box{
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+    background: #ffffff;
+}
+
+
+.side-nav .side-nav-item.active .menu-icon svg path{
+    fill: #5d29a6;
+}
+
+.published-card {
+    border: 2px solid #f1f1f1;
+    border-radius: 16px;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: #fff;
+    transition: border 0.3s ease, box-shadow 0.3s ease; /* added transition */
+}
+
+.published-card:hover {
+    border: 2px solid #6C3FC5;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* optional subtle shadow on hover */
+}
+
+.published-card .card-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.published-card .icon-area {
+    margin-right: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+    background: #6c3fc6;
+    border-radius: 50px;
+}
+
+.published-card .text-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.published-card .card-title {
+    color: #959BA0;
+    font-size: 1.18rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.published-card .card-number {
+    color: #232323;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+
+.banner-upload-card {
+    width: 100%;
+    /*max-width: 600px;*/
+    min-height: 140px;
+    background: #f7f8fa;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0 auto 24px auto;
+    transition: box-shadow 0.2s;
+    border: none;
+}
+
+.banner-upload-card:hover {
+    box-shadow: 0 0 0 3px #e2e6ee;
+}
+
+.banner-upload-content {
+    text-align: center;
+    color: #bfc5d2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.banner-upload-content svg {
+    margin-bottom: 8px;
+}
+
+.banner-upload-text {
+    font-size: 18px;
+    color: #bfc5d2;
+}
+
+#banner_preview img {
+    display: block;
+    /*margin: 24px auto 0 auto;*/
+    max-width: 150px;
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px #ececec;
+}
+
+
+.toggle-btn-group {
+    display: flex;
+    background: #f6f7fa;
+    border-radius: 10px;
+    padding: 6px;
+    width: fit-content;
+}
+
+.toggle-btn-group input[type="radio"] {
+    display: none;
+}
+
+.toggle-btn-group label {
+    padding: 3px 30px;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    /* font-size: 16px; */
+    color: #888;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 0 1px;
+}
+
+.toggle-btn-group input[type="radio"]:checked + label {
+    background: #5D29A6;
+    color: #ffffff;
+    box-shadow: 0px 1px 7px 0px #00000029;
+
+}
+
+
+/*.classes-content {
+    margin: auto;
+    padding: 30px;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}*/
+
+.master-class-div{
+
+}
+
+.masterclass-card{
+    border: 1px solid #E4EBEB;
+    padding: 10px;
+}
+
+.edit-btn{
+    background: #5D29A6;
+    color: #fff;
+}
+
+.edit-btn:hover{
+    background: #5D29A6;
+    color: #fff;
+}
+
+.repetitive_box{
+    padding: 40px 0px;
+    border-top: 1px solid #c1c1c1;
+}
+
+.feedback_box{
+    padding: 20px;
+    border: 1px solid black;
+}
+
+
+.session-heading {
+    cursor: pointer;
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    position: relative;
+    user-select: none;
+}
+
+.slick-poster-image{
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
