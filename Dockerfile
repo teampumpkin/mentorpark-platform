@@ -10,7 +10,7 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    unzip git curl libzip-dev supervisor \
+    unzip git curl libzip-dev \
     && docker-php-ext-install pdo pdo_mysql zip
 
 # Install Composer
@@ -26,21 +26,12 @@ RUN composer install --no-dev --optimize-autoloader
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# Clear caches
-#RUN php artisan config:clear \
- #   && php artisan cache:clear \
-  #  && php artisan route:clear \
-   # && php artisan view:clear
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Create storage symlink
-#RUN php artisan storage:link
-
-
-# Copy supervisor config for queue worker (optional if using queues)
-#COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
-
-# Expose port 80
+# Expose port
 EXPOSE 80
 
-# Start supervisor and Apache
-CMD ["sh", "-c", "supervisord -n -c /etc/supervisor/conf.d/supervisor.conf & apache2-foreground"]
+# Start container via entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
